@@ -145,7 +145,7 @@ test/                 integration tests against Postgres
 
 ### 1. Data model and why I structured it this way
 
-TODO
+The data models are designed such that everything stays segregated with only the things that needs to stay connected via foreign key, constraints and indexes are placed based on the access patterns and reliability requirements
 
 ### 2. How I handled the auction-close boundary
 
@@ -153,7 +153,7 @@ So a bid is only accepted in the open window (start_time <= current_time < end_t
 
 ### 3. How I handled a request to place a new bid, and why
 
-Request starts with Zod validation which validates all the params, body and fields, then inside a single transaction we lock the auction row, bid on the same auction wait in line, validates if the user exist, auction exist and all, check if the user have same bid for the same auction if yes then 200 with same response, then read the db clock as lock is held now, check for everything like end_time, amount, etc, apply the rules and return the response.
+Request starts with Zod validation which validates all the params, body and fields, then inside a single transaction we lock the auction row, bid on the same auction wait in line, validates if the user exist, auction exist and all, check if the user have same accepted bid for the same auction if yes then 200 with same response, then read the db clock as lock is held now, check for everything like end_time, amount, etc, apply the rules and return the response.
 
 ### 4. A user bidding on their own current top bid: what I decided and why
 
